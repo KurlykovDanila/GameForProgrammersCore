@@ -11,4 +11,4 @@ Players can send multiple commands to the server to control their character. (Fo
 
 It will be possible to write player control in any programming language in which it is possible to use ipc.
 
-#### This repository is responsible only for all the logic of the game
+### <span style="color:red">This repository is responsible only for all the logic of the game</span>
