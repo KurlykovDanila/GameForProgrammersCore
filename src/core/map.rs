@@ -10,7 +10,8 @@ use super::uniq::{ID};
 #[derive(Debug)]
 enum CellType<'a> {
     Empty,
-    Hero(&'a Hero<'a>)
+    Hero(&'a Hero<'a>),
+    Wall
 }
 
 
@@ -61,8 +62,12 @@ impl<'a> Map<'a> {
 
     /// Проверка на то что герой может  походить в выбранном напрвлении
     fn hero_can_move(&self, heroes_coordinates: &Vector2, direction: &Direction) -> bool {
-        //TODO
-        return true;
+        let coord = *heroes_coordinates + direction.to_vector2();
+        if !(coord.x > 0 && (coord.x as usize) < self.field.len() && coord.y > 0 && (coord.y as usize) < self.field[coord.x as usize].len()) { false; }
+        match self.field[coord.x as usize][coord.y as usize] {
+            CellType::Empty => true,
+            _ => false,
+        }
     }
 
     pub fn move_hero(&mut self, hero_id: ID, direction: &Direction) {
