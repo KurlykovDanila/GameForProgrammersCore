@@ -8,7 +8,7 @@ use super::map::{Map};
 #[derive(Debug)]
 pub struct Game<'a> {
     map: &'a mut Map<'a>,
-    players: Vec<&'a mut Player<'a>>,
+    players: Vec<&'a mut Player>,
     shift: Shift
 }
 
@@ -34,7 +34,7 @@ struct Shift {
 impl<'a> Game<'a> {
 
     /// Создание новой игры
-    pub fn new(players: Vec<&'a mut Player<'a>>, map: &'a mut Map<'a>) -> Game<'a>{
+    pub fn new(players: Vec<&'a mut Player>, map: &'a mut Map<'a>) -> Game<'a>{
         let shift = Shift{current_value: 0, max_value: players.len() as u8};
         Game {
             map: map,

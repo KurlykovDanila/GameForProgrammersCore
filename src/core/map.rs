@@ -1,6 +1,7 @@
 use super::hero::{Hero};
 use super::geometry::{Vector2, Direction};
 use super::uniq::{ID};
+use std::fmt;
 
 
 /// Каждая клетка, которая может быть размещена на карте, должна быть внесена в данное перечисление
@@ -8,17 +9,16 @@ use super::uniq::{ID};
 /// Через перечисление должна быть возможноть получить все необходимые данные об объекте в данной клетке, а лучше сам объект
 #[derive(Clone, Copy)]
 #[derive(Debug)]
-enum CellType<'a> {
+pub enum CellType {
     Empty,
-    Hero(&'a Hero<'a>),
-    Wall
+    Hero(Hero),
+    Wall,
 }
-
 
 #[derive(Debug)]
 pub struct Map<'a> {
     size: u8,
-    field: Vec<Vec<CellType<'a>>>,
+    field: Vec<Vec<CellType>>,
     heroes_coordinates: Vec<(ID, &'a Vector2)>
 }
 
@@ -35,7 +35,7 @@ impl<'a> Map<'a> {
     }
 
     /// Добавляет персонажа по внесённым координатам на карту если выбранная координата соответсвует `CellType::Empty`
-    pub fn add_hero(&mut self, hero: &'a Hero<'a>, coordinate: &'a Vector2) {
+    pub fn add_hero(&mut self, hero: Hero, coordinate: &'a Vector2) {
         match self.field[coordinate.x as usize][coordinate.y as usize] {
             CellType::Empty => {
                 self.field[coordinate.x as usize][coordinate.y as usize] = CellType::Hero(hero);
@@ -45,9 +45,8 @@ impl<'a> Map<'a> {
         }
     }
 
-    
 
-    fn change_cell_type(&mut self, coordinate: &Vector2, new_cell_type: CellType<'a>) {
+    fn change_cell_type(&mut self, coordinate: &Vector2, new_cell_type: CellType) {
         self.field[coordinate.x as usize][coordinate.y as usize] = new_cell_type;
     }
 
@@ -59,6 +58,9 @@ impl<'a> Map<'a> {
         }
         return Option::None;
     }
+
+    pub fn get_hero_by_id(&self, id: ID) {}//-> &Hero
+
 
     /// Проверка на то что герой может  походить в выбранном напрвлении
     fn hero_can_move(&self, heroes_coordinates: &Vector2, direction: &Direction) -> bool {
@@ -85,4 +87,20 @@ impl<'a> Map<'a> {
                 }
     }
 
+    pub fn print(&self) {
+        for i in 1..self.size {
+            println!("{:?}", self.field[i as usize]);
+        }
+    }
+
+}
+
+impl fmt::Display for CellType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", match self {
+            CellType::Empty => "Empty",
+            CellType::Hero(_) => "Hero",
+            CellType::Wall => "Wall"
+        })
+    }
 }

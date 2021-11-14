@@ -1,14 +1,15 @@
 use super::uniq::{ID};
-use super::gun::{Gun};
+use super::gun::{Gun, Sword};
 use std::cmp::{min};
 
 
 /// Состояния характеристик героя в игре
 #[derive(Debug)]
-pub struct Hero<'a>{
+#[derive(Clone, Copy)]
+pub struct Hero{
     pub id: ID,
-    health: &'a mut Health,
-    gun: &'a Gun,
+    health: Health,
+    gun: Gun,
 
 }
 
@@ -32,13 +33,13 @@ pub trait Armed {
     fn get_damage_value(&self) -> u16;
 }
 
-impl<'a> Attack for Hero<'a> {
+impl Attack for Hero {
     fn attack(&self, target: &mut impl Mortal) {
         target.get_damage(self.gun.get_damage_value());
     }
 }
 
-impl<'a> Mortal for Hero<'a> {
+impl Mortal for Hero {
     fn get_damage(&mut self, value: u16) {
         self.health.reduce_current_value(value);
     }
@@ -53,7 +54,19 @@ pub trait Attack {
     fn attack(&self, target: &mut impl Mortal) -> ();
 }
 
+impl Hero {
+    pub fn new(health: u16, damage: u16, id: ID) -> Hero {
+        let h = Health::new(health);
+        return Hero{
+            health: h,
+            id: id,
+            gun: Gun::Sword(Sword{damage: damage}),
+        };
+    }
+}
+
 /// Отвечает за состояние здоровья героя]
+#[derive(Clone, Copy)]
 #[derive(Debug)]
 struct Health {
     max_value: u16,

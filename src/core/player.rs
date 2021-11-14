@@ -4,9 +4,9 @@ use super::uniq::{ID};
 
 /// Глобальное состояние игрока
 #[derive(Debug)]
-pub struct Player<'a> {
+pub struct Player {
     pub id: ID,
-    hero: Hero<'a>,
+    hero: Hero,
 }
 
 /// Команды которые игроки могут отдавать своим героям
