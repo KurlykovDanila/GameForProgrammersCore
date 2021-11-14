@@ -4,16 +4,56 @@ use std::cmp::{min};
 
 
 /// Состояния характеристик героя в игре
-#[derive(Copy, Clone)]
 #[derive(Debug)]
 pub struct Hero<'a>{
     pub id: ID,
-    health: &'a Health,
+    health: &'a mut Health,
     gun: &'a Gun,
 
 }
-/// Отвечает за состояние здоровья героя
-#[derive(Copy, Clone)]
+
+impl Armed for Gun {
+   fn get_damage_value(&self) -> u16 {
+       match self {
+           Gun::Bow(bow) => {
+               return bow.damage;
+           },
+           Gun::Srear(spear) => {
+               return spear.damage;
+           },
+           Gun::Sword(sword) => {
+               return sword.damage;
+           }
+       }
+   } 
+}
+
+pub trait Armed {
+    fn get_damage_value(&self) -> u16;
+}
+
+impl<'a> Attack for Hero<'a> {
+    fn attack(&self, target: &mut impl Mortal) {
+        target.get_damage(self.gun.get_damage_value());
+    }
+}
+
+impl<'a> Mortal for Hero<'a> {
+    fn get_damage(&mut self, value: u16) {
+        self.health.reduce_current_value(value);
+    }
+} 
+
+pub trait Mortal {
+    fn get_damage(&mut self, value: u16) -> ();
+}
+
+pub trait Attack {
+
+    fn attack(&self, target: &mut impl Mortal) -> ();
+}
+
+/// Отвечает за состояние здоровья героя]
 #[derive(Debug)]
 struct Health {
     max_value: u16,
