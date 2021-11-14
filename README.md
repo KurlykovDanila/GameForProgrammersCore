@@ -10,3 +10,5 @@ Players connect to the server and join the game with other players. Several play
 Players can send multiple commands to the server to control their character. (For example, moving, attacking, reloading weapons, etc.)
 
 It will be possible to write player control in any programming language in which it is possible to use ipc.
+
+#### This repository is responsible only for all the logic of the game
