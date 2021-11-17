@@ -1,7 +1,8 @@
 use super::uniq::{ID};
 use super::player::{PlayerCommand, Player};
 use super::map::{Map};
-
+use std::cmp::{min};
+use std::collections::HashMap;
 
 /// Связывает игроков, их героев и выбранную карту
 /// Отвечает за выполнение ходов игроками
@@ -31,6 +32,27 @@ struct Shift {
     max_value: u8,
 }
 
+impl Shift {
+    pub fn next(&mut self) {
+        self.current_value = (self.current_value + 1) % self.max_value
+    }
+
+    pub fn increase_max_value(&mut self, value: u8) {
+        self.max_value += value;
+        self.normalize_current_value();
+    }
+    
+    pub fn reduce_max_value(&mut self, value: u8) {
+        self.max_value -= value;
+        self.normalize_current_value();
+    }
+
+    fn normalize_current_value(&mut self) {
+        self.current_value = min(self.current_value, self.max_value);
+    }
+
+}
+
 impl<'a> Game<'a> {
 
     /// Создание новой игры
@@ -48,8 +70,15 @@ impl<'a> Game<'a> {
     pub fn start(&mut self) {}
 
     /// Происходит один ход каждого игрока
-    pub fn do_step(&mut self) {
-        
+    pub fn do_step(&mut self, commands: HashMap<ID, Vec<PlayerCommand>>) {
+        for pl in 0..(self.players.len() - 1) {
+            let id = self.players[(pl + self.shift.current_value as usize) % (self.shift.max_value as usize)].hero.id;
+            let or: Vec<PlayerCommand> = Vec::new();
+            let pl_commands = commands.get(&id).unwrap_or(&or);
+            for command in pl_commands {
+                self.execute_player_command(id, command.clone());
+            }
+        }
     }
 
     /// Завршение игры по причине победы игрока или принудительно из-за каких либо проблем

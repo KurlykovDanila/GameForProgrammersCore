@@ -6,10 +6,11 @@ use super::uniq::{ID};
 #[derive(Debug)]
 pub struct Player {
     pub id: ID,
-    hero: Hero,
+    pub hero: Hero,
 }
 
 /// Команды которые игроки могут отдавать своим героям
+#[derive(Copy, Clone)]
 #[derive(Debug)]
 pub enum PlayerCommand {
     Move(Direction),

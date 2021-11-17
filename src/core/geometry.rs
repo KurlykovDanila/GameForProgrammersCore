@@ -19,6 +19,7 @@ impl Add for Vector2 {
 
 /// Просто направления 
 #[derive(Debug)]
+#[derive(Copy, Clone)]
 pub enum Direction {
     Top,
     Bottom,
