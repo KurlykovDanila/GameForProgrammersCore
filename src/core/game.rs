@@ -8,9 +8,17 @@ use std::collections::HashMap;
 /// Отвечает за выполнение ходов игроками
 #[derive(Debug)]
 pub struct Game<'a> {
+    game_state: GameState,
     map: &'a mut Map<'a>,
     players: Vec<&'a mut Player>,
     shift: Shift
+}
+
+#[derive(Debug)]
+enum GameState {
+    NotStarted,
+    Continue,
+    Finished,
 }
 
     
@@ -59,6 +67,7 @@ impl<'a> Game<'a> {
     pub fn new(players: Vec<&'a mut Player>, map: &'a mut Map<'a>) -> Game<'a>{
         let shift = Shift{current_value: 0, max_value: players.len() as u8};
         Game {
+            game_state: GameState::NotStarted,
             map: map,
             players: players,
             shift: shift,
@@ -67,16 +76,25 @@ impl<'a> Game<'a> {
     /// Все приготовления перед игрой
     /// 
     /// Необходимо запустить перед `do_step`
-    pub fn start(&mut self) {}
+    pub fn start(&mut self) {
+        self.game_state = GameState::Continue;
+    }
 
     /// Происходит один ход каждого игрока
     pub fn do_step(&mut self, commands: HashMap<ID, Vec<PlayerCommand>>) {
-        for pl in 0..(self.players.len() - 1) {
-            let id = self.players[(pl + self.shift.current_value as usize) % (self.shift.max_value as usize)].hero.id;
-            let or: Vec<PlayerCommand> = Vec::new();
-            let pl_commands = commands.get(&id).unwrap_or(&or);
-            for command in pl_commands {
-                self.execute_player_command(id, command.clone());
+        match self.game_state {
+            GameState::Continue => {
+                for pl in 0..(self.players.len() - 1) {
+                    let id = self.players[(pl + self.shift.current_value as usize) % (self.shift.max_value as usize)].hero.id;
+                    let or: Vec<PlayerCommand> = Vec::new();
+                    let pl_commands = commands.get(&id).unwrap_or(&or);
+                    for command in pl_commands {
+                        self.execute_player_command(id, command.clone());
+                    }
+                }
+            },
+            _ => {
+                return;
             }
         }
     }
@@ -84,7 +102,9 @@ impl<'a> Game<'a> {
     /// Завршение игры по причине победы игрока или принудительно из-за каких либо проблем
     /// 
     /// (Корректное завершение игры)
-    pub fn end(&mut self) {}
+    pub fn end(&mut self) {
+        self.game_state = GameState::Finished;
+    }
 
     /// Парсинг команды игрока и её применение к герою со всеми проверками 
     
