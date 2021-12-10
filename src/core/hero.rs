@@ -55,6 +55,7 @@ pub trait Attack {
 }
 
 impl Hero {
+
     pub fn new(health: u16, damage: u16, id: ID) -> Hero {
         let h = Health::new(health);
         return Hero{

@@ -30,10 +30,10 @@ pub enum Direction {
 impl Direction {
     pub fn to_vector2(&self) -> Vector2 {
         match self {
-            Top => Vector2{x: 0, y: 1},
-            Bottom => Vector2{x: 0, y: -1},
-            Right => Vector2{x: 1, y: 0},
-            Left => Vector2{x: -1, y: 0},
+            Direction::Top => Vector2{x: 0, y: 1},
+            Direction::Bottom => Vector2{x: 0, y: -1},
+            Direction::Right => Vector2{x: 1, y: 0},
+            Direction::Left => Vector2{x: -1, y: 0},
         } 
     }
 }
