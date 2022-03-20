@@ -224,8 +224,8 @@ impl fmt::Display for CellType {
             "{}",
             match self {
                 CellType::Empty => "Empty",
-                CellType::Hero(_) =>  "\x1b[92mHero \x1b[0m",
-                CellType::Wall => "\x1b[93mWall \x1b[0m",
+                CellType::Hero(_) =>  "Hero ",
+                CellType::Wall => "Wall ",
             }
         )
     }

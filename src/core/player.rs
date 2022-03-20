@@ -1,5 +1,6 @@
 use super::geometry::Direction;
 use super::hero::Hero;
+use super::statistic::Statistics;
 use super::uniq::*;
 use std::fmt;
 
@@ -8,6 +9,7 @@ use std::fmt;
 pub struct Player {
     id: PlayerId,
     pub hero: Hero,
+    pub statistic: Statistics,
 }
 
 /// Команды которые игроки могут отдавать своим героям
@@ -64,7 +66,11 @@ impl Uniq for Player {
 
 impl Player {
     fn new(hero: Hero, id: PlayerId) -> Player {
-        let player = Player { hero: hero, id: id };
+        let player = Player {
+            hero: hero,
+            id: id,
+            statistic: Statistics::default(),
+        };
         log::info!("Create new player: {:?}", player);
         return player;
     }
@@ -73,6 +79,7 @@ impl Player {
         let player = Player {
             hero: Hero::new(100, 10, id),
             id: id,
+            statistic: Statistics::default(),
         };
         log::info!("Create new player: {:?}", player);
         return player;

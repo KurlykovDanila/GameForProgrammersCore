@@ -7,6 +7,6 @@ edition = "2018"
 
 [dependencies]
 log = "0.4"
-simple_logger = "2.1.0"
+log4rs = "1.0.0"
 envconfig = "0.10.0"
 rand = "0.8.5"
