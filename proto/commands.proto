@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package commands_message;
+
+message Commands {
+    Command first_command = 1;
+    Command second_command = 2;
+    Command third_command = 3;
+}
+
+message Command {
+    enum CommandType {
+        NOTHING = 0;
+        MOVE = 1;
+        ATTACK = 2;
+        RELOAD = 3;   
+    }
+
+    enum Direction {
+        TOP = 0;
+        BOTTOM = 1;
+        RIGHT = 2;
+        LEFT = 3;
+    }
+
+    CommandType type = 1;
+    Direction direction = 2;
+}
