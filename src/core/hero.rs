@@ -2,9 +2,12 @@ use super::config::*;
 use super::gun::*;
 use super::uniq::*;
 use std::cmp::min;
+use serde::{Deserialize, Serialize};
 
 /// Состояния характеристик героя в игре
 #[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize)]
+#[serde(rename = "hero")]
 pub struct Hero {
     id: PlayerId,
     health: Health,
@@ -69,7 +72,7 @@ pub trait Armed {
 impl Attack for Hero {
     fn attack(&mut self, target: &mut impl Mortal) {
         if self.gun.can_attack() {
-            log::info!("Attack hero id: ({})", self.id());
+            log::trace!("Attack hero id: ({})", self.id());
             self.gun.attack();
             target.get_damage(self.gun.get_damage_value());
         }
@@ -79,7 +82,7 @@ impl Attack for Hero {
 
 impl Mortal for Hero {
     fn get_damage(&mut self, value: u16) {
-        log::info!("Get gamage hero id: ({})", self.id());
+        log::trace!("Get gamage hero id: ({})", self.id());
         self.health.reduce_current_value(value);
     }
 }
@@ -118,8 +121,11 @@ impl Hero {
 
 /// Отвечает за состояние здоровья героя]
 #[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize)]
 struct Health {
+    #[serde(rename = "max")]
     max_value: u16,
+    #[serde(rename = "current")]
     current_value: u16,
 }
 

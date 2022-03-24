@@ -7,6 +7,10 @@ edition = "2018"
 
 [dependencies]
 log = "0.4"
-log4rs = "1.0.0"
 envconfig = "0.10.0"
 rand = "0.8.5"
+tungstenite = "0.17.2"
+sha2 = "0.10.2"
+log4rs = "1.0.0"
+serde_json = "1.0.17"
+serde = "1.0"

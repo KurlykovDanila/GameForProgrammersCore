@@ -1,0 +1,15 @@
+{
+    "len": 3,
+    "commands": [
+        {
+            "type": "Attack",
+            "direction": "Left"
+        },
+        {
+            "type": "Reload"
+        },
+        {
+            "type": "Nothing"
+        }
+    ]
+}

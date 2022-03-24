@@ -1,0 +1,18 @@
+{
+    "id": 1647,
+    "health": {
+        "max": 1000,
+        "current": 1000
+    },
+    "gun": {
+        "type": "Sword",
+        "damage": 70,
+        "range": 1,
+        "reload": {
+            "max_time": 0,
+            "current_time": 0,
+            "max_amount_attacks": 1,
+            "current_amount_attacks": 1
+        }
+    }
+}

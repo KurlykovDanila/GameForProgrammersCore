@@ -2,7 +2,7 @@
 pub struct Statistics {
     wins: usize,
     losses: usize,
-    mathes: usize,
+    matches: usize,
     min_step_for_win: usize,
 }
 
@@ -25,7 +25,7 @@ impl Statistics {
         return self.losses;
     }
     fn add_matches(&mut self) {
-        self.mathes += 1
+        self.matches += 1
     }
     pub fn get_min_steps(&self) -> usize {
         return self.min_step_for_win;

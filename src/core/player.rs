@@ -2,6 +2,7 @@ use super::geometry::Direction;
 use super::hero::Hero;
 use super::statistic::Statistics;
 use super::uniq::*;
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /// Глобальное состояние игрока
@@ -13,7 +14,8 @@ pub struct Player {
 }
 
 /// Команды которые игроки могут отдавать своим героям
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum PlayerCommand {
     Move(Direction),
     Attack(Direction),
@@ -21,8 +23,11 @@ pub enum PlayerCommand {
     Nothing,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct PlayerCommands {
+    #[serde(skip)]
     index: usize,
+    len: usize,
     commands: Vec<PlayerCommand>,
 }
 
@@ -30,6 +35,7 @@ impl PlayerCommands {
     pub fn new(len: usize) -> PlayerCommands {
         PlayerCommands {
             index: 0,
+            len: len,
             commands: vec![PlayerCommand::Nothing; len],
         }
     }

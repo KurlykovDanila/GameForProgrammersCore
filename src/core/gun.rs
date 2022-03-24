@@ -1,7 +1,9 @@
 use crate::core::config::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
 /// Пример оружия дальнего боя
+#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize)]
 pub struct Bow {
     pub damage: u16,
     pub range: u8,
@@ -9,6 +11,7 @@ pub struct Bow {
 }
 /// Пример оружия ближнего боя
 #[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize)]
 pub struct Sword {
     pub damage: u16,
     pub range: u8,
@@ -16,6 +19,7 @@ pub struct Sword {
 }
 /// Пример оружия средней дистации
 #[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize)]
 pub struct Spear {
     pub damage: u16,
     pub range: u8,
@@ -25,6 +29,8 @@ pub struct Spear {
 /// Перечисление обобщающее все оружия
 /// При создании нового оружия его необхожимо добавить сюда
 #[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum Gun {
     Bow(Bow),
     Sword(Sword),
@@ -38,10 +44,15 @@ impl Configurated for Gun {
 }
 
 #[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize)]
 pub struct Reloader {
+    #[serde(rename = "max_time")]
     reload_time_max: u8,
+    #[serde(rename = "current_time")]
     reload_time_now: u8,
+    #[serde(rename = "max_amount_attacks")]
     size_max: u8,
+    #[serde(rename = "current_amount_attacks")]
     size_current: u8,
 }
 

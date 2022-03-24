@@ -1,8 +1,11 @@
 use std::cmp::Eq;
 use std::hash::Hash;
+use serde::{Deserialize, Serialize};
 
 /// УНИКАЛЬНЫЙ идентфикатор
 #[derive(Copy, Clone, Debug, Hash)]
+
+#[derive(Serialize, Deserialize)]
 pub struct ID(pub u16);
 pub type PlayerId = ID;
 pub type GameId = ID;

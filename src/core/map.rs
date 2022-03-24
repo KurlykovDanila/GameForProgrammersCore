@@ -3,20 +3,25 @@ use super::hero::*;
 use super::uniq::*;
 use rand::prelude::*;
 use std::fmt;
+use serde::{Deserialize, Serialize};
 
 /// Каждая клетка, которая может быть размещена на карте, должна быть внесена в данное перечисление
 ///
 /// Через перечисление должна быть возможноть получить все необходимые данные об объекте в данной клетке, а лучше сам объект
 #[derive(Clone)]
+#[derive(Serialize, Deserialize)]
 pub enum CellType {
     Empty,
     Hero(Hero),
     Wall,
 }
 
+
+#[derive(Serialize, Deserialize)]
 pub struct Map {
     size: u8,
     field: Vec<Vec<CellType>>,
+    #[serde(skip)]
     heroes_coordinates: Vec<(ID, Vector2)>,
 }
 
@@ -35,7 +40,7 @@ impl Map {
         }
         field[0][0] = CellType::Empty;
         field[(size - 1) as usize][(size - 1) as usize] = CellType::Empty;
-        log::info!("Create map size: ({})", size);
+        log::trace!("Create map size: ({})", size);
         Map {
             size: size,
             field: field,
@@ -51,7 +56,7 @@ impl Map {
                     CellType::Hero(mut attacker) => {
                         let attack_coordinate = coordinate + direction.to_vector2();
                         if !self.coordinate_on_map(attack_coordinate) {
-                            log::info!(
+                            log::trace!(
                                 "Hero with id: ({}) attack out of map, attack coordinate: ({:?})",
                                 attacker.id(),
                                 attack_coordinate
@@ -68,11 +73,11 @@ impl Map {
                                     attacker.id(),
                                     enemy.id()
                                 );
-                                log::info!("Attacker state: {:?}", attacker);
-                                log::info!("Enemy state: {:?}", enemy);
+                                log::trace!("Attacker state: {:?}", attacker);
+                                log::trace!("Enemy state: {:?}", enemy);
                             }
                             _ => {
-                                log::warn!("By coord: ({:?}) no enemy", attack_coordinate);
+                                log::info!("By coord: ({:?}) no enemy", attack_coordinate);
                             }
                         }
                     }
@@ -135,7 +140,7 @@ impl Map {
     }
 
     fn change_cell_type(&mut self, coordinate: &Vector2, new_cell_type: CellType) {
-        log::info!(
+        log::trace!(
             "Change cell type coord: ({:?}), from ({}) to ({})",
             *coordinate,
             self.field[coordinate.x as usize][coordinate.y as usize],
@@ -180,14 +185,14 @@ impl Map {
                     self.change_cell_type(&new_coordinate, cell_type);
                     self.change_cell_type(&coordinate, CellType::Empty);
                     self.change_hero_coordinate(hero_id, new_coordinate);
-                    log::info!(
+                    log::trace!(
                         "Move hero id: ({}), from ({:?}) to ({:?})",
                         hero_id,
                         coordinate,
                         new_coordinate
                     );
                 } else {
-                    log::info!("Hero with id: ({}) can not move", hero_id);
+                    log::trace!("Hero with id: ({}) can not move", hero_id);
                 }
             }
             None => {

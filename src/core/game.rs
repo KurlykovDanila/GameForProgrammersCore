@@ -91,7 +91,7 @@ impl Game {
     ///
     /// Необходимо запустить перед `do_step`
     pub fn start(&mut self) {
-        log::info!("Game start");
+        log::trace!("Game start");
         self.game_state = GameState::Continue;
     }
 
@@ -100,7 +100,7 @@ impl Game {
         match self.game_state {
             // Нужно переработать, сделано не правильно
             GameState::Continue => {
-                log::info!("Game do step");
+                log::trace!("Game do step");
                 let commands_len = commands[0].1.len();
                 let players_vec: Vec<PlayerId> = commands.iter().map(|pair| pair.0).collect();
                 for command_index in 0..(commands_len) {
@@ -133,11 +133,11 @@ impl Game {
     fn execute_player_command(&mut self, hero_id: PlayerId, player_command: PlayerCommand) {
         match player_command {
             PlayerCommand::Attack(direction) => {
-                log::info!("Plyer attack execute for hero with id: ({})", hero_id);
+                log::trace!("Plyer attack execute for hero with id: ({})", hero_id);
                 self.map.attack(hero_id, direction)
             }
             PlayerCommand::Move(direction) => {
-                log::info!("Plyer move execute for hero with id: ({})", hero_id);
+                log::trace!("Plyer move execute for hero with id: ({})", hero_id);
                 self.map.move_hero(hero_id, direction);
             }
             PlayerCommand::Reload => {}
