@@ -9,6 +9,12 @@ Players connect to the server and join the game with other players. Several play
 
 Players can send multiple commands to the server to control their character. (For example, moving, attacking, reloading weapons, etc.)
 
-It will be possible to write player control in any programming language in which it is possible to use ipc.
 
-### <span style="color:red">This repository is responsible only for all the logic of the game</span>
+All that is required is to connect to the web socket and send messages in the format from `jsons` direction.
+
+### Steps
+1. Connect to server
+2. Sign in or sign up
+3. Wait start game
+4. Play game
+5. Go to step number 3 
